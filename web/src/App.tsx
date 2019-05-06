@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
+import * as React from 'react';
+import axios from 'axios';
 import './App.css';
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface Props {}
+
+interface State {
+  message: String
+}
+
+
+class App extends React.Component<Props, State> {
+  constructor (props: Props) {
+    super(props);
+    this.state = {
+      message: ""
+    }
+  }
+
+  public componentDidMount(): void {
+    axios.get('api/test')
+      .then(response => this.setState({message: response.data}))
+      .catch(error => console.log(error))
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <p>Message from backend: {this.state.message}</p>
+      </div>
+    )
+  }
 }
 
 export default App;
